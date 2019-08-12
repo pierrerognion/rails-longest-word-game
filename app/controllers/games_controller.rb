@@ -8,19 +8,17 @@ class GamesController < ApplicationController
   end
 
   def score
-
     @attempt = params[:word]
     @grid = params[:letters].split(" ")
-    
     url = "https://wagon-dictionary.herokuapp.com/#{@attempt}"
     serialized_wagon_dic = open(url).read
       word = JSON.parse(serialized_wagon_dic)
       if word["found"] == false
         @result = { score: 0, message: "not an english word" }
       elsif @attempt.upcase.split(//).all? { |char| @grid.delete_at(@grid.index(char)) if @grid.include?(char) }
-        @result = "well done"
+        @result = { score: 0, message: "well done" }
       else
-        @result = "not in the grid"
+        @result = { score: 0, message: "not in the grid" }
       end
     end
 end
